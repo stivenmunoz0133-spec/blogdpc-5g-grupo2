@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5G en 20 000 artículos: mapa bibliométrico y latencia URLLC · BlogDPC Grupo 2 UIS</title>
+<meta name="description" content="Divulgación pública de la ciencia: análisis bibliométrico con VOSviewer de 20 000 documentos de Scopus sobre 5G y un mini-caso que compara la latencia de eMBB y URLLC. Reto ABET SO7, Comunicaciones II, Universidad Industrial de Santander.">
+<meta name="keywords" content="5G, URLLC, eMBB, VOSviewer, bibliometría, Scopus, network slicing, MIMO, mmWave, latencia, UIS, Comunicaciones II">
+<meta name="author" content="Stiven Muñoz, Minuk Lee, Elkin Largo">
+<link rel="canonical" href="https://blogdpc-5g-g2.vercel.app/">
+<!-- SEO académico (Google Scholar / Highwire) -->
+<meta name="citation_title" content="5G en 20 000 artículos: mapa bibliométrico de tendencias y mini-caso de latencia eMBB vs URLLC">
+<meta name="citation_author" content="Muñoz, Stiven"><meta name="citation_author" content="Lee, Minuk"><meta name="citation_author" content="Largo, Elkin">
+<meta name="citation_publication_date" content="2026/11/14">
+<meta name="citation_dissertation_institution" content="Universidad Industrial de Santander">
+<meta name="citation_language" content="es">
+<!-- Open Graph / redes -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="5G en 20 000 artículos · BlogDPC Grupo 2 UIS">
+<meta property="og:description" content="Qué investiga hoy la literatura sobre 5G y cómo conviven la banda ancha y la latencia de 1 ms. Mapa VOSviewer, 200 enlaces analizados y simulación.">
+<meta property="og:image" content="assets/img/mapa_completo.webp">
+<meta property="og:locale" content="es_CO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#15233F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2315233F'/%3E%3Crect x='5' y='8' width='6' height='16' fill='%233A6EA5'/%3E%3Crect x='13' y='8' width='6' height='16' fill='%232A9D8F'/%3E%3Crect x='21' y='8' width='6' height='16' fill='%23D1495B'/%3E%3Crect x='13' y='13' width='6' height='5' fill='%23E9A23B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ScholarlyArticle","headline":"5G en 20 000 artículos: mapa bibliométrico de tendencias y mini-caso de latencia eMBB vs URLLC","inLanguage":"es","datePublished":"2026-11-14","author":[{"@type":"Person","name":"Stiven Muñoz"},{"@type":"Person","name":"Minuk Lee"},{"@type":"Person","name":"Elkin Largo"}],"publisher":{"@type":"CollegeOrUniversity","name":"Universidad Industrial de Santander"},"about":["5G","URLLC","eMBB","Bibliometría","VOSviewer"],"keywords":"5G, URLLC, eMBB, VOSviewer, Scopus"}
+</script>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="topbar">
+  <a class="brand" href="#inicio" aria-label="Inicio">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="8" height="18" fill="var(--c3)"/><rect x="12" y="7" width="8" height="18" fill="var(--c2)"/><rect x="22" y="7" width="8" height="18" fill="var(--c1)"/><rect x="12" y="13" width="8" height="5" fill="var(--amber)"/></svg>
+    <span>BlogDPC <b>5G</b></span>
+  </a>
+  <nav class="topnav" aria-label="Secciones principales">
+    <a href="#que-es">Qué es</a><a href="#metodologia">Método</a><a href="#mapa">Mapa</a><a href="#analisis">Análisis</a><a href="#minicaso">Mini-caso</a><a href="#reflexion">Reflexión</a><a href="#referencias">Fuentes</a>
+  </nav>
+  <div class="tools">
+    <button class="icon-btn" id="btn-buscar" aria-label="Buscar en el blog" title="Buscar (/)"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button>
+    <button class="icon-btn" id="btn-tts" aria-label="Escuchar la sección actual" title="Escuchar la sección actual"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg></button>
+    <button class="icon-btn" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro" title="Modo claro / oscuro"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
+    <button class="icon-btn menu-btn" id="btn-menu" aria-label="Abrir índice" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+
+<div class="search-panel" id="buscador" hidden>
+  <div class="search-box">
+    <label for="q" class="sr">Buscar en el blog</label>
+    <input id="q" type="search" placeholder="Busca un término: urllc, umbral, antenna, BLER…" autocomplete="off">
+    <div class="tag-filter" role="group" aria-label="Filtrar por categoría"></div>
+    <ol id="resultados" class="results" aria-live="polite"></ol>
+  </div>
+</div>
+
+<div class="layout">
+<aside class="toc" id="toc" aria-label="Índice del blog">
+  <p class="toc-title">Recorrido</p>
+  <ol id="toc-list"></ol>
+  <p class="toc-title">Entradas del trabajo</p>
+  <ol class="timeline" id="timeline"></ol>
+</aside>
+
+<main id="contenido">
+
+<!-- ============ INICIO ============ -->
+<section id="inicio" class="hero" data-cat="Contexto" data-titulo="Inicio">
+  <canvas id="rejilla" aria-hidden="true"></canvas>
+  <div class="hero-text">
+    <p class="kicker">Reto ABET SO7 · Comunicaciones II (27145) · UIS · Grupo 2</p>
+    <h1>5G, leído en 20&nbsp;000 artículos</h1>
+    <p class="declaracion">“La presente Divulgación Pública de la Ciencia, a través del siguiente Desarrollo Web, tiene una ruta de circulación nacional sin enfoque diferencial y está dirigido a la comunidad o público objetivo conformado por jóvenes, adultos, empresarios y/o empresa en género literario informativo de tipo Blog, con componente digital a través de soporte web”.</p>
+    <p class="lead">Mapeamos con <abbr class="g" data-g="VOSviewer">VOSviewer</abbr> qué investiga hoy la literatura científica sobre 5G y simulamos una pregunta concreta: ¿cómo puede una misma red entregar video en alta definición (<abbr class="g" data-g="eMBB">eMBB</abbr>) y, al mismo tiempo, mensajes críticos en menos de 1 ms (<abbr class="g" data-g="URLLC">URLLC</abbr>)?</p>
+    <p class="hero-caption">Arriba: la rejilla de recursos de 5G. Cada columna es un intervalo de tiempo y cada fila una porción del espectro. Los bloques ámbar son mensajes URLLC que interrumpen la transmisión de banda ancha. Es la idea que pusimos a prueba en el <a href="#minicaso">mini-caso</a>.</p>
+  </div>
+  <dl class="kpis" id="kpis"></dl>
+</section>
+
+<!-- ============ QUÉ ES ============ -->
+<section id="que-es" data-cat="Contexto" data-titulo="Qué es 5G">
+  <h2>Qué es 5G, en palabras sencillas</h2>
+  <p>Cada generación de telefonía móvil resolvió un problema: 2G llevó la voz digital, 3G trajo internet al celular y 4G lo hizo rápido. <abbr class="g" data-g="5G">5G</abbr> no es solo «4G más rápido»: está diseñada para tres tipos de servicio muy distintos, definidos por la Unión Internacional de Telecomunicaciones en el informe ITU-R M.2410 <a class="cite" href="#ref-1">[1]</a>.</p>
+  <div class="servicios" id="infografia" role="tablist" aria-label="Los tres servicios de 5G"></div>
+  <p>El reto es que los tres comparten la misma <abbr class="g" data-g="slot">rejilla</abbr> de tiempo y frecuencia. Si un mensaje <abbr class="g" data-g="URLLC">URLLC</abbr> (por ejemplo, la orden de frenado de un robot) tiene que esperar a que termine una descarga de video, llega tarde. Prueba tú mismo:</p>
+
+  <figure class="demo" id="demo">
+    <figcaption><b>Mini-demo.</b> Un paquete URLLC llega mientras la celda transmite datos eMBB. Elige cómo lo atiende la red y mira cuánto espera.</figcaption>
+    <div class="demo-controls">
+      <div class="seg" role="radiogroup" aria-label="Política de la red">
+        <label><input type="radio" name="pol" value="fifo" checked> Esperar su turno (FIFO)</label>
+        <label><input type="radio" name="pol" value="prio"> Pasar primero en la fila</label>
+        <label><input type="radio" name="pol" value="preem"> Interrumpir (apropiación)</label>
+      </div>
+      <label class="range">Paquetes eMBB en fila: <output id="demo-q-out">4</output><input id="demo-q" type="range" min="0" max="10" value="4"></label>
+      <button id="demo-go" class="btn">Enviar paquete URLLC</button>
+    </div>
+    <canvas id="demo-canvas" height="150"></canvas>
+    <p class="demo-out" id="demo-out" aria-live="polite">Pulsa «Enviar paquete URLLC».</p>
+  </figure>
+  <p class="note">La demo usa tiempos ilustrativos (un paquete eMBB de 1500 bytes tarda 0,12 ms en un enlace de 100 Mbit/s). Los resultados con tráfico aleatorio y todas las cifras reales están en el <a href="#minicaso">mini-caso</a>.</p>
+</section>
+
+<!-- ============ METODOLOGÍA ============ -->
+<section id="metodologia" data-cat="Método" data-titulo="Metodología">
+  <h2>Cómo hicimos el estudio</h2>
+  <p>Seguimos el procedimiento del Anexo A de la guía: una búsqueda en <abbr class="g" data-g="Scopus">Scopus</abbr>, un mapa de <abbr class="g" data-g="co-ocurrencia">co-ocurrencia</abbr> de términos en VOSviewer 1.6.21 <a class="cite" href="#ref-5">[5]</a> y una depuración manual con criterios explícitos.</p>
+  <h3>Búsqueda y criterios</h3>
+  <div class="table-wrap"><table class="data">
+    <caption>Criterios de inclusión y exclusión</caption>
+    <thead><tr><th>Criterio</th><th>Decisión</th><th>Justificación</th></tr></thead>
+    <tbody>
+      <tr><td>Cadena</td><td><code>"5G"</code></td><td>Tema asignado al Grupo 2; la cadena amplia captura todas las líneas de investigación.</td></tr>
+      <tr><td>Años</td><td>2016–2025 (filtro)</td><td>Rango recomendado por el Anexo A. Por el tope de exportación, el CSV contiene documentos de 2024 a 2027 (ver <a href="#reflexion">limitaciones</a>).</td></tr>
+      <tr><td>Tipo de documento</td><td>Artículo y ponencia de conferencia</td><td>Literatura revisada por pares; se excluyen editoriales, notas y libros.</td></tr>
+      <tr><td>Campos para el mapa</td><td>Título y resumen</td><td>Opción «text data» de VOSviewer; captura el lenguaje real de los autores.</td></tr>
+      <tr><td>Conteo</td><td>Binario</td><td>Un término cuenta una sola vez por documento, aunque se repita.</td></tr>
+      <tr><td>Registros exportados</td><td>20 000 (10 048 artículos, 9 952 ponencias)</td><td>Máximo de exportación CSV de Scopus.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Del texto a 172 términos</h3>
+  <p>El Anexo A pide escoger el mínimo de ocurrencias con el que un número de términos <em>igual o muy cercano a 500</em> supere el umbral. Probamos varios valores: con 168 ocurrencias pasan 498 términos. Antes de contar unificamos 38 sinónimos con un thesaurus (por ejemplo, <i>millimeter wave</i> → <i>mmwave</i>).</p>
+  <div class="embudo" id="embudo" role="img" aria-label="Embudo de términos: 318 755 iniciales, 498 superan el umbral, 299 por relevancia, 172 tras la depuración manual"></div>
+
+  <h3>Depuración manual: términos eliminados</h3>
+  <p>De los 299 términos seleccionados por relevancia quitamos 127, y cada uno tiene su criterio. Sin esta limpieza, el análisis habría girado alrededor de palabras como <i>approach</i>, <i>model</i> o <i>challenge</i> en lugar de 5G.</p>
+  <div class="filtros" id="filtro-elim"></div>
+  <div class="table-wrap scroll"><table class="data" id="tabla-elim"><caption>Términos eliminados (127)</caption><thead><tr><th>Término</th><th class="num">Ocurrencias</th><th>Criterio</th></tr></thead><tbody></tbody></table></div>
+  <figure class="pair">
+    <img src="assets/img/vos_numero_terminos.webp" alt="Ventana de VOSviewer: de 498 términos se seleccionan 299 por relevancia" loading="lazy" width="680" height="550">
+    <img src="assets/img/vos_verify.webp" alt="Ventana Verify selected terms de VOSviewer con términos genéricos desmarcados" loading="lazy" width="680" height="550">
+    <figcaption>Capturas de VOSviewer: selección del 60 % más relevante y verificación manual de términos. La captura del umbral va solo en el informe Word, como indica el Anexo A.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ MAPA ============ -->
+<section id="mapa" data-cat="Resultados" data-titulo="Mapa bibliométrico">
+  <h2>El mapa: tres conversaciones sobre 5G</h2>
+  <p>Cada círculo es un término y su tamaño indica en cuántos documentos aparece. Las líneas unen términos que aparecen juntos, y su grosor es la <abbr class="g" data-g="fuerza de asociación">fuerza de asociación</abbr>. VOSviewer agrupó los 172 términos en tres <abbr class="g" data-g="clúster">clústeres</abbr>.</p>
+  <figure class="wide">
+    <img src="assets/img/mapa_completo.webp" alt="Mapa completo de co-ocurrencia de VOSviewer con 172 términos en tres clústeres: rojo (red y servicios), azul (capa física) y verde (antenas)" width="1400" height="1232" loading="lazy">
+    <figcaption>Mapa completo: 172 términos, 3 clústeres, 13 116 enlaces y fuerza total de enlace de 534 855.</figcaption>
+  </figure>
+  <div class="tabs" id="tabs-cluster" role="tablist" aria-label="Clústeres"></div>
+  <div id="panel-cluster" class="cluster-panel" role="tabpanel"></div>
+</section>
+
+<!-- ============ MAPA CONCEPTUAL ============ -->
+<section id="conceptual" data-cat="Resultados" data-titulo="Mapa conceptual interactivo">
+  <h2>Mapa conceptual interactivo</h2>
+  <p>Aquí están las 20 palabras que analizamos y sus 10 enlaces más fuertes. Arrastra los nodos, acerca o aleja con la rueda del ratón y haz clic en una palabra para ver sus datos y saltar a su análisis.</p>
+  <div class="concept">
+    <svg id="grafo" role="img" aria-label="Grafo interactivo de las 20 palabras analizadas y sus enlaces"></svg>
+    <aside class="concept-info" id="grafo-info" aria-live="polite"><p>Selecciona una palabra.</p></aside>
+  </div>
+  <p class="legend"><span class="dot c1"></span>Red y servicios <span class="dot c2"></span>Antenas y RF <span class="dot c3"></span>Capa física · el grosor de la línea es la fuerza de asociación</p>
+</section>
+
+<!-- ============ ANÁLISIS ============ -->
+<section id="analisis" data-cat="Resultados" data-titulo="Análisis de 200 enlaces">
+  <h2>Análisis de 200 enlaces</h2>
+  <p>Aplicamos el «Teorema ZamoraCluster» del Anexo A para repartir el análisis por igual. Con C = 3 clústeres, W = ⌊20/3⌋ = 6 palabras por clúster y quedan R = 200 − 180 = 20 enlaces, es decir, k = 2 palabras extra. Resultado: <b>7 palabras en el clúster 1, 7 en el clúster 2 y 6 en el clúster 3</b>, cada una con sus 10 enlaces más fuertes. Elegimos las palabras por número de ocurrencias y pertinencia directa para 5G.</p>
+  <div class="table-wrap"><table class="data sortable" id="tabla-palabras">
+    <caption>Las 20 palabras (haz clic en un encabezado para ordenar)</caption>
+    <thead><tr><th data-k="n" class="num">#</th><th data-k="palabra">Palabra</th><th data-k="cluster">Clúster</th><th data-k="occ" class="num">Ocurrencias</th><th data-k="links" class="num">Enlaces</th><th data-k="tls" class="num">Fuerza total</th><th data-k="top">Enlace más fuerte</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <div class="filtros" id="filtro-palabras"></div>
+  <div id="fichas"></div>
+</section>
+
+<!-- ============ TENDENCIAS ============ -->
+<section id="tendencias" data-cat="Resultados" data-titulo="Tendencias">
+  <h2>Tendencias en el corpus</h2>
+  <p>Contamos en cuántos documentos de cada año aparece cada subtema (en el título o el resumen). Como el corpus está concentrado en 2024–2027, las gráficas muestran <em>qué peso relativo</em> gana cada tema en la literatura más reciente, no la evolución de toda la década.</p>
+  <div class="charts">
+    <figure><canvas id="ch-anios" aria-label="Documentos por año"></canvas><figcaption>Documentos por año en el CSV de Scopus. 2027 son artículos «en prensa» (87).</figcaption></figure>
+    <figure><canvas id="ch-sub" aria-label="Porcentaje de documentos por subtema y año"></canvas><figcaption>Porcentaje de documentos del año que mencionan cada subtema (2024–2026).</figcaption></figure>
+  </div>
+  <div class="subtemas" id="sel-subtemas" role="group" aria-label="Subtemas a mostrar"></div>
+  <h3>Generador de visualizaciones</h3>
+  <p>Escribe lo que quieres ver y el blog arma la gráfica. Por ejemplo: «compara 6G e IA en líneas», «total de documentos por subtema en barras» o «evolución de URLLC y network slicing».</p>
+  <form class="gen" id="gen-form"><label for="gen-q" class="sr">Petición de gráfica</label><input id="gen-q" placeholder="compara 6G, IoT y seguridad en líneas"><button class="btn">Generar gráfica</button></form>
+  <p class="note" id="gen-msg">El generador interpreta tu petición con reglas de lenguaje natural (subtemas, tipo de gráfica y métrica) sobre los datos reales del corpus.</p>
+  <figure><canvas id="ch-gen" aria-label="Gráfica generada"></canvas></figure>
+</section>
+
+<!-- ============ MINI-CASO ============ -->
+<section id="minicaso" data-cat="Aplicación" data-titulo="Mini-caso técnico">
+  <h2>Mini-caso: ¿pueden convivir eMBB y URLLC?</h2>
+  <p>El análisis mostró que el enlace más fuerte de <i>urllc</i> es <i>embb</i> (fuerza 277), y que a su alrededor aparecen <i>reliability</i>, <i>network slicing</i> y <i>resource allocation</i>. Convertimos esa relación en una pregunta de ingeniería y la respondimos con un simulador propio en Python (código y README en el repositorio).</p>
+  <div class="cols">
+    <div><h3>Objetivo</h3><p>Verificar si un <i>scheduler</i> simple de una celda 5G puede cumplir a la vez 1 ms para URLLC y 4 ms para eMBB, los requisitos de ITU-R M.2410 <a class="cite" href="#ref-1">[1]</a>, y qué política lo logra cuando sube la carga.</p></div>
+    <div><h3>Hipótesis</h3><ol><li>Con una sola fila (FIFO), URLLC supera 1 ms en cargas moderadas.</li><li>La prioridad simple mejora la media pero no alcanza el 99,999 %.</li><li>La <abbr class="g" data-g="apropiación">apropiación</abbr> con una codificación robusta (<abbr class="g" data-g="BLER">BLER</abbr> 10⁻⁵) sí lo logra, con un costo pequeño para eMBB.</li></ol></div>
+  </div>
+  <h3>Método y supuestos</h3>
+  <ul class="compact">
+    <li>Simulación de eventos discretos: enlace de 100 Mbit/s, llegadas Poisson, paquetes de 1500 bytes (eMBB) y 32 bytes (URLLC), carga URLLC de 0,02 y carga eMBB de 0,30 a 0,90.</li>
+    <li>Capa 5G NR: alineación al <abbr class="g" data-g="slot">slot</abbr> de 0,5 ms (eMBB) o al <abbr class="g" data-g="mini-slot">mini-slot</abbr> de 2 símbolos (URLLC) a 30 kHz, más procesamiento y retransmisiones <abbr class="g" data-g="HARQ">HARQ</abbr> según la BLER.</li>
+    <li>KPI: latencia media y <abbr class="g" data-g="percentil 99">percentil 99</abbr>, <abbr class="g" data-g="jitter">jitter</abbr>, <abbr class="g" data-g="throughput">throughput</abbr>, BLER y porcentaje de paquetes dentro del requisito. Semilla fija 2026.</li>
+    <li>Validación: el simulador reproduce las fórmulas de teoría de colas (Pollaczek–Khinchine, Cobham, prioridad apropiativa) con error mediano de 0,55 % <a class="cite" href="#ref-6">[6]</a>, <a class="cite" href="#ref-7">[7]</a>.</li>
+  </ul>
+  <h3>Simulador interactivo de resultados</h3>
+  <p>Mueve la carga de la celda y cambia la codificación de URLLC para explorar los resultados que produjo el simulador.</p>
+  <div class="sim">
+    <div class="sim-controls">
+      <label class="range">Carga total de la celda (ρ): <output id="sim-rho-out">0,72</output><input id="sim-rho" type="range" min="0" max="7" value="4" step="1"></label>
+      <div class="seg" role="radiogroup" aria-label="BLER de URLLC">
+        <label><input type="radio" name="bler" value="base" checked> URLLC con codificación robusta (BLER 10⁻⁵)</label>
+        <label><input type="radio" name="bler" value="urllc_bler_0.1"> URLLC con la codificación de eMBB (BLER 0,1)</label>
+      </div>
+    </div>
+    <div class="sim-cards" id="sim-cards"></div>
+    <figure><canvas id="ch-sim" aria-label="Latencia p99 de URLLC según la carga"></canvas></figure>
+  </div>
+  <h3>Resultados</h3>
+  <figure class="wide"><img src="assets/img/mc_latencia_p99.webp" alt="Latencia en el percentil 99 de URLLC y eMBB según la carga para FIFO, prioridad y apropiación" width="1400" height="542" loading="lazy"><figcaption>Latencia p99 según la carga. Con FIFO, URLLC supera 1 ms desde ρ = 0,52.</figcaption></figure>
+  <figure class="pair">
+    <img src="assets/img/mc_bler_urllc.webp" alt="Probabilidad de que un paquete URLLC supere 1 ms en escala logarítmica" width="1050" height="675" loading="lazy">
+    <img src="assets/img/mc_validacion.webp" alt="Validación del simulador: simulación contra teoría de colas" width="975" height="675" loading="lazy">
+    <figcaption>Izquierda: confiabilidad URLLC (la línea punteada es el requisito 10⁻⁵). Derecha: validación contra teoría de colas.</figcaption>
+  </figure>
+  <h3>Discusión y decisión de ingeniería</h3>
+  <p>La prioridad simple mantiene la latencia p99 de URLLC por debajo de 1 ms, pero entre 0,03 % y 0,1 % de los paquetes siguen llegando tarde porque esperan a que termine el paquete eMBB en curso. Solo la apropiación, que 5G NR permite mediante la indicación de apropiación (DCI 2_1) <a class="cite" href="#ref-2">[2]</a>, combinada con una BLER de 10⁻⁵, deja la probabilidad de fallo por debajo de 10⁻⁵, y a eMBB le cuesta como máximo 0,03 ms de latencia media. <b>Recomendación:</b> separar los servicios (nunca una cola FIFO común), habilitar la apropiación y usar una MCS robusta para URLLC. Si la carga URLLC creciera, convendría una rebanada dedicada (<abbr class="g" data-g="network slicing">network slicing</abbr>).</p>
+  <h3>Limitaciones y próximos pasos</h3>
+  <p>El modelo no representa la pérdida real de los recursos eMBB «perforados», usa la BLER como parámetro y considera una sola celda. Los siguientes pasos serían obtener la BLER de curvas BLER–SNR (MATLAB 5G Toolbox) y estudiar varios usuarios y canal 3GPP con NS-3.</p>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz" data-cat="Aprendizaje" data-titulo="Quiz">
+  <h2>Pon a prueba lo que leíste</h2>
+  <p>Seis preguntas con las cifras reales del estudio.</p>
+  <form id="quiz-form" class="quiz"></form>
+  <p class="quiz-score" id="quiz-score" aria-live="polite"></p>
+</section>
+
+<!-- ============ PLAN ============ -->
+<section id="plan" data-cat="Aprendizaje" data-titulo="Plan de aprendizaje">
+  <h2>Pregunta guía y plan de aprendizaje</h2>
+  <blockquote id="pregunta"></blockquote>
+  <div class="cols">
+    <div><h3>Estrategias</h3><ul id="plan-estrategias" class="compact"></ul></div>
+    <div><h3>Cronograma</h3><ol id="plan-crono" class="crono"></ol></div>
+  </div>
+  <h3>Riesgos y cómo los manejamos</h3>
+  <div class="table-wrap"><table class="data" id="plan-riesgos"><thead><tr><th>Riesgo</th><th>Respuesta</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<!-- ============ REFLEXIÓN ============ -->
+<section id="reflexion" data-cat="Aprendizaje" data-titulo="Reflexión">
+  <h2>Reflexión metacognitiva</h2>
+  <div id="reflexion-txt"></div>
+  <h3>Lecciones para la práctica profesional</h3>
+  <ul id="lecciones" class="compact"></ul>
+  <aside class="ia-note"><h3>Uso responsable de IA</h3><p id="uso-ia"></p></aside>
+</section>
+
+<!-- ============ EQUIPO ============ -->
+<section id="equipo" data-cat="Comunidad" data-titulo="Equipo">
+  <h2>Equipo</h2>
+  <p>Grupo 2 del laboratorio de Comunicaciones II (27145), Escuela de Ingenierías Eléctrica, Electrónica y de Telecomunicaciones, Universidad Industrial de Santander. Profesor: Ronald Zamora Musa.</p>
+  <ul class="equipo" id="equipo-list"></ul>
+</section>
+
+<!-- ============ VIDEO ============ -->
+<section id="video" data-cat="Comunidad" data-titulo="Video">
+  <h2>Presentación en video</h2>
+  <div class="video" id="video-box" data-youtube=""></div>
+</section>
+
+<!-- ============ REFERENCIAS ============ -->
+<section id="referencias" data-cat="Método" data-titulo="Fuentes consultadas">
+  <h2>Fuentes consultadas</h2>
+  <ol class="refs" id="refs"></ol>
+  <h3>Artículos del corpus más citados (temas de 5G)</h3>
+  <p>Algunos de los documentos más citados del corpus, útiles para profundizar en cada clúster.</p>
+  <ol class="refs" id="citados"></ol>
+</section>
+
+<!-- ============ RETROALIMENTACIÓN ============ -->
+<section id="retroalimentacion" data-cat="Comunidad" data-titulo="Retroalimentación">
+  <h2>Retroalimentación</h2>
+  <p>Este blog se compartió en el foro del aula virtual. Déjanos tu comentario o tu reacción. Los comentarios se guardan públicamente en GitHub Discussions; para comentar necesitas una cuenta de GitHub.</p>
+  <div class="share" id="share">
+    <span>Compartir:</span>
+    <a data-net="linkedin" target="_blank" rel="noopener">LinkedIn</a>
+    <a data-net="x" target="_blank" rel="noopener">X</a>
+    <a data-net="whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+    <a data-net="facebook" target="_blank" rel="noopener">Facebook</a>
+    <a data-net="researchgate" target="_blank" rel="noopener" title="Copia el enlace y pégalo en una publicación de ResearchGate">ResearchGate</a>
+    <button class="btn ghost" id="copiar">Copiar enlace</button>
+  </div>
+  <h3>Encuesta rápida</h3>
+  <div class="poll" id="poll"></div>
+  <h3>Comentarios</h3>
+  <div id="comentarios" class="comments"></div>
+  <h3>Opiniones recibidas en el foro</h3>
+  <ul id="feedback-list" class="compact"><li>Aquí resumiremos los aportes de los compañeros en el foro del aula virtual.</li></ul>
+</section>
+
+<footer class="footer">
+  <p>BlogDPC · Grupo 2 · Comunicaciones II (27145) 2026-II · Universidad Industrial de Santander. Los datos de Scopus se publican solo como tablas derivadas (conteos y fuerzas de asociación).</p>
+  <p><a href="#inicio">Volver al inicio</a></p>
+</footer>
+</main>
+</div>
+
+<!-- Glosario emergente -->
+<div class="pop" id="pop" role="tooltip" hidden></div>
+
+<!-- Chatbot -->
+<button class="bot-btn" id="bot-btn" aria-expanded="false" aria-controls="bot">Pregúntale al blog</button>
+<section class="bot" id="bot" hidden aria-label="Asistente del blog">
+  <header><b>Pregúntale al blog</b><button class="icon-btn" id="bot-close" aria-label="Cerrar asistente"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></header>
+  <div class="bot-log" id="bot-log" aria-live="polite"></div>
+  <div class="bot-sug" id="bot-sug"></div>
+  <form id="bot-form"><label for="bot-q" class="sr">Tu pregunta</label><input id="bot-q" placeholder="Escribe tu pregunta…" autocomplete="off"><button class="btn">Enviar</button></form>
+</section>
+
+<script src="assets/vendor/chart.umd.min.js" defer></script>
+<script src="assets/vendor/d3.min.js" defer></script>
+<script src="assets/js/data.js" defer></script>
+<script src="assets/js/app.js" defer></script>
+<!-- Analítica: Vercel Web Analytics (se activa en el panel de Vercel) -->
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
