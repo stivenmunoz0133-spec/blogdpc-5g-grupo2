@@ -424,7 +424,7 @@ $('#poll').addEventListener('click', e => { const b = e.target.closest('.chip');
 pintarPoll();
 
 /* Comentarios con Giscus (GitHub Discussions). Se completan los identificadores al crear el repositorio. */
-const GISCUS = { repo: '', repoId: '', category: 'General', categoryId: '' };
+const GISCUS = { repo: 'stivenmunoz0133-spec/blogdpc-5g-grupo2', repoId: 'R_kgDOVq5kTg', category: 'General', categoryId: 'DIC_kwDOVq5kTs4DK6oB' };
 if (GISCUS.repo && GISCUS.repoId && GISCUS.categoryId) {
   const s = document.createElement('script');
   Object.entries({ src: 'https://giscus.app/client.js', 'data-repo': GISCUS.repo, 'data-repo-id': GISCUS.repoId, 'data-category': GISCUS.category, 'data-category-id': GISCUS.categoryId,
