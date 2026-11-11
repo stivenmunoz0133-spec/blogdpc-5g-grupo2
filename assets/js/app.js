@@ -13,7 +13,7 @@ const store = {
 };
 const CL = { 1: 'Red y servicios', 2: 'Antenas y RF', 3: 'Capa física' };
 const ccol = c => css(`--c${c}`);
-const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ\s.-]/g, ' ');
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9ñ\s.]/g, ' ').replace(/\s+/g, ' ');
 const md = s => s.replace(/\*([^*]+)\*/g, '<i>$1</i>');
 
 /* ================= Tema ================= */
@@ -508,7 +508,7 @@ function responder(pregunta) {
   let mejor = null, pts = 0;
   D.faq.forEach(([claves, resp, h]) => { const s = claves.reduce((a, k) => a + (n.includes(' ' + norm(k) + ' ') || n.includes(norm(k)) ? k.length : 0), 0); if (s > pts) { pts = s; mejor = [resp, h]; } });
   const pal = D.palabras.find(p => n.includes(' ' + p.palabra + ' '));
-  if (pal && (!mejor || pts < pal.palabra.length + 1)) mejor = [`«${pal.palabra}» (clúster ${pal.cluster}) aparece en ${fmt(pal.occ)} documentos. Su enlace más fuerte es con «${pal.enlaces[0].t}» (fuerza ${fmt(pal.enlaces[0].f)}).`, '#w-' + pal.n];
+  if (pal && !mejor) mejor = [`«${pal.palabra}» (clúster ${pal.cluster}) aparece en ${fmt(pal.occ)} documentos. Su enlace más fuerte es con «${pal.enlaces[0].t}» (fuerza ${fmt(pal.enlaces[0].f)}).`, '#w-' + pal.n];
   const g = Object.keys(D.glosario).find(k => n.includes(' ' + norm(k) + ' '));
   if (!mejor && g) mejor = [D.glosario[g], '#que-es'];
   if (mejor) decir(`${mejor[0]} <a href="${mejor[1]}" ${mejor[1].startsWith('#w-') ? `data-open="${mejor[1].slice(3)}"` : ''}>Ver en el blog</a>`);
